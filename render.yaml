@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: django-react-app
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+      npm install --prefix frontend
+      npm run build --prefix frontend
+    startCommand: gunicorn backend.myproject.wsgi
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
